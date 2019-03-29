@@ -78,15 +78,29 @@ def check_and_get_upgrade_link_and_date(user, enrollment=None, course=None):
         if course is None:
             course = enrollment.course
         elif enrollment.course_id != course.id:
-            logger.warn(u'{} refers to a different course than {} which was supplied'.format(
-                enrollment, course
-            ))
+            logger.warn(u'{} refers to a different course than {} which was supplied. Enrollment course id={}, repr={},'
+                        u' deprecated={}. Course id={}, repr={}, deprecated={}.'.format(enrollment,
+                                                                                        course,
+                                                                                        enrollment.course_id,
+                                                                                        repr(enrollment.course_id),
+                                                                                        enrollment.course_id.deprecated,
+                                                                                        course.id,
+                                                                                        repr(course.id),
+                                                                                        course.id.deprecated
+                                                                                        )
+                        )
             return (None, None)
 
         if enrollment.user_id != user.id:
-            logger.warn(u'{} refers to a different user than {} which was supplied'.format(
-                enrollment, user
-            ))
+            logger.warn(u'{} refers to a different user than {} which was supplied. Enrollment user id={}, repr={}. '
+                        u'User id={}, repr={}.'.format(enrollment,
+                                                       user,
+                                                       enrollment.user_id,
+                                                       repr(enrollment.user_id),
+                                                       user.id,
+                                                       repr(user.id),
+                                                       )
+                        )
             return (None, None)
 
     if enrollment is None:
